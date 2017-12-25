@@ -60,13 +60,13 @@ def survival_stats(data, outcomes, key, filters = []):
     
     # Check that the key exists
     if key not in data.columns.values :
-        print "'{}' is not a feature of the Titanic data. Did you spell something wrong?".format(key)
+        print("'{}' is not a feature of the Titanic data. Did you spell something wrong?".format(key))
         return False
 
     # Return the function before visualizing if 'Cabin' or 'Ticket'
     # is selected: too many unique categories to display
     if(key == 'Cabin' or key == 'PassengerId' or key == 'Ticket'):
-        print "'{}' has too many unique categories to display! Try a different feature.".format(key)
+        print("'{}' has too many unique categories to display! Try a different feature.".format(key))
         return False
 
     # Merge data and outcomes into single dataframe
@@ -102,10 +102,14 @@ def survival_stats(data, outcomes, key, filters = []):
         # Overlay each bin's survival rates
         nonsurv_vals = all_data[all_data['Survived'] == 0][key].reset_index(drop = True)
         surv_vals = all_data[all_data['Survived'] == 1][key].reset_index(drop = True)
-        plt.hist(nonsurv_vals, bins = bins, alpha = 0.6,
-                 color = 'red', label = 'Did not survive')
-        plt.hist(surv_vals, bins = bins, alpha = 0.6,
-                 color = 'green', label = 'Survived')
+        # plt.hist(nonsurv_vals, bins = bins, alpha = 0.6,
+        #         color = 'r', label = 'Did not survive')
+        # plt.hist(surv_vals, bins = bins, alpha = 0.6,
+        #         color = 'g', label = 'Survived')
+        plt.hist(nonsurv_vals, bins = bins,
+                 color = 'r', label = 'Did not survive')
+        plt.hist(surv_vals, bins = bins,
+                 color = 'g', label = 'Survived') 
     
         # Add legend to plot
         plt.xlim(0, bins.max())
@@ -151,6 +155,6 @@ def survival_stats(data, outcomes, key, filters = []):
     # Report number of passengers with missing values
     if sum(pd.isnull(all_data[key])):
         nan_outcomes = all_data[pd.isnull(all_data[key])]['Survived']
-        print "Passengers with missing '{}' values: {} ({} survived, {} did not survive)".format( \
-              key, len(nan_outcomes), sum(nan_outcomes == 1), sum(nan_outcomes == 0))
+        print("Passengers with missing '{}' values: {} ({} survived, {} did not survive)".format( \
+              key, len(nan_outcomes), sum(nan_outcomes == 1), sum(nan_outcomes == 0)))
 
